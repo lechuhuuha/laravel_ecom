@@ -18,7 +18,7 @@ class ProductController extends Controller
         $products = Product::latest()->filter(request(['search', 'price']));
         $categories = Category::all();
         $brands = Brand::paginate(5);
-        return view('test', ['products' => $products->paginate(5), 'categories' => $categories, 'brands' => $brands]);
+        return view('test', ['products' => $products->paginate(6), 'categories' => $categories, 'brands' => $brands]);
     }
     public function show(Product $product)
     {
@@ -91,7 +91,7 @@ class ProductController extends Controller
         if ($cart) {
             $date = date('Y-m-d H:i:m');
             $newOrderArray = array("status" => "on_hold", "date" => $date, "del_date" => $date, "price" => $cart->totalPrice, "created_at" => DB::raw('CURRENT_TIMESTAMP'), "updated_at" => DB::raw('CURRENT_TIMESTAMP'), "first_name" => $first_name ? $first_name : null, "address" => $address ? $address : null, "last_name" => $last_name ? $last_name : null, "zip" => $zip ? $zip : null, "email" => $email ? $email : null, "phone" => $phone ? $phone : null);
-            
+
             $createdOrder = DB::table('orders')->insert($newOrderArray);
             $orders_id = DB::getPdo()->lastInsertId();
             foreach ($cart->items as $item) {

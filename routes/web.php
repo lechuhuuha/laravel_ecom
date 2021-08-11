@@ -56,6 +56,12 @@ Route::get('logout', 'SessionController@destroy')->middleware('auth');
 
 Route::post('product/{product}/comment', 'CommentController@store')->name('product.comment.store');
 
+Route::get('product/category/{name?}', 'ProductFilterController@category')->name('product.category.show');
+Route::get('product/brand/{name?}', 'ProductFilterController@brand')->name('product.brand.show');
+
+Route::get('contact',function (){
+    return view('contacts');
+});
 Route::group([
     'prefix' => 'admin',
     'as' => 'admin.',
@@ -89,10 +95,18 @@ Route::group([
         renderRoute('order', 'OrderController');
     });
 });
+
+Route::fallback(function () {
+    return abort(404);
+});
+
 /**
  * TODO list : 
  * comment,product with categories and have many images done
  * search done
  * manage user done 
- * checkout
+ * checkout done
+ * refactor web route
+ * refactor db
+ * refactor controller
  */

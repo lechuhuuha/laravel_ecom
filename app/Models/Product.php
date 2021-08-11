@@ -45,5 +45,18 @@ class Product extends Model
         $query->when($filters['price']   ?? false, function ($query, $price) {
             $query->whereBetween('price', $price);
         });
+        // $query->when($filters['category'] ?? false, function ($query, $category) {
+        //     $query->whereHas('categories', function ($query, $category) {
+        //         $query->where('title', 'like', '%' . $category . '%');
+        //     });
+        // });
+    }
+    public function scopeCategory($query, $name)
+    {
+        return $query->whereHas('categories', fn ($query) => $query->where('name', 'like', '%' . $name . '%'));
+    }
+    public function scopeBrand($query,$name)
+    {
+        return $query->whereHas('brands', fn ($query) => $query->where('name', 'like', '%' . $name . '%'));
     }
 }
