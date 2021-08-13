@@ -17,24 +17,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                            <tr>
-                                <td class="cart_price">
-                                    <p>{{ $data['status'] }}</p>
-                                </td>
-                                <td class="cart_quantity">
-                                    <div class="cart_quantity_button">
-                                        <label for="">Shipping cost : Free</label>
-                                    </div>
-                                </td>
-                                <td class="cart_total">
-                                    <p class="cart_total_price">${{ $data['price'] }}</p>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td class="cart_price">
+                                <p>{{ $data['status'] }}</p>
+                            </td>
+                            <td class="cart_quantity">
+                                <div class="cart_quantity_button">
+                                    <label for="">Shipping cost : Free</label>
+                                </div>
+                            </td>
+                            <td class="cart_total">
+                                <p class="cart_total_price">${{ $data['price'] }}</p>
+                            </td>
+                        </tr>
 
                     </tbody>
                 </table>
             </div>
-            <a class="btn btn-default check_out" href="">Pay now</a>
+            <form action="{{ route('payment.store') }}" method="post">
+                @csrf
+                <button class="btn btn-default check_out" href="{{ route('payment.store') }}">Pay now</button>
+            </form>
 
         </div>
     </section>

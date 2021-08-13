@@ -6,7 +6,8 @@
                 <div class="view-product">
                     @if ($product->images->count() > 0)
 
-                        <img src="{{ Storage::disk('local')->url($product->images->first()->path) }}" width="200" alt="" />
+                        <img src="{{ Storage::disk('local')->url($product->images->first()->path) }}" width="200"
+                            alt="" />
                     @endif
                 </div>
                 <div id="similar-product" class="carousel slide" data-ride="carousel">
@@ -46,11 +47,16 @@
                     <span>
                         <span>{{ $product->price }}</span>
                         <label>Quantity:</label>
-                        <input type="text" value="3" />
-                        <button type="button" class="btn btn-fefault cart">
-                            <i class="fa fa-shopping-cart"></i>
-                            Add to cart
-                        </button>
+                        <form action="{{ route('addToCart', ['id' => $product->id]) }}" method="post">
+                            @csrf
+                            <input type="text" name="quantity" value="1" />
+                            <button type="submit" class="btn btn-fefault cart">
+                                <i class="fa fa-shopping-cart"></i>
+                                Add to cart
+
+                            </button>
+                        </form>
+
                     </span>
                     <p><b>Availability:</b>
                         @if ($product->count() > 0)
@@ -59,9 +65,14 @@
                             Het hang
                         @endif
                     </p>
+                    <p><b>Categories:</b>
+                        @foreach ($product->categories as $item)
+                            <a href="{{ route('product.category.show', $item->name) }}">{{ $item->name }}</a>
+                        @endforeach
+                    </p>
                     <p><b>Brand:</b>
                         @foreach ($product->brands as $item)
-                            {{ $item->name }}
+                            <a href="{{ route('product.brand.show', $item->name) }}">{{ $item->name }}</a>
                         @endforeach
                     </p>
                     <a href=""><img src="images/product-details/share.png" class="share img-responsive" alt="" /></a>
@@ -76,8 +87,8 @@
             <div class="col-sm-12">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="#details" data-toggle="tab">Details</a></li>
-                    <li><a href="#tag" data-toggle="tab">Tag</a></li>
-                    <li><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+                    <li><a href="#tag" data-toggle="tab">Brand</a></li>
+                    <li><a href="#reviews" data-toggle="tab">Reviews ({{ $product->comments->count() }})</a></li>
                 </ul>
             </div>
             <div class="tab-content">
@@ -99,88 +110,10 @@
                 </div>
 
                 <div class="tab-pane fade" id="tag">
-                    <div class="col-sm-3">
-                        <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img src="images/home/gallery1.jpg" alt="" />
-                                    <h2>$56</h2>
-                                    <p>Easy Polo Black Edition</p>
-                                    <button type="button" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Add to cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img src="images/home/gallery2.jpg" alt="" />
-                                    <h2>$56</h2>
-                                    <p>Easy Polo Black Edition</p>
-                                    <button type="button" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Add to cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img src="images/home/gallery3.jpg" alt="" />
-                                    <h2>$56</h2>
-                                    <p>Easy Polo Black Edition</p>
-                                    <button type="button" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Add to cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="product-image-wrapper">
-                            <div class="single-products">
-                                <div class="productinfo text-center">
-                                    <img src="images/home/gallery4.jpg" alt="" />
-                                    <h2>$56</h2>
-                                    <p>Easy Polo Black Edition</p>
-                                    <button type="button" class="btn btn-default add-to-cart"><i
-                                            class="fa fa-shopping-cart"></i>Add to cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="reviews">
-                    @foreach ($product->comments as $item)
-                        <div class="col-sm-12">
-                            <ul>
-                                <li><a href=""><i class="fa fa-user"></i>{{ $item->user->name }}</a></li>
-                                <li><a href=""><i class="fa fa-calendar-o"></i><time>
-                                            {{ $item->user->created_at->format('F j, Y, g:i a') }}
-                                        </time></a></li>
-                            </ul>
-                            <p>{{ $item->body }}</p>
-                        </div>
-                    @endforeach
-                    @auth
-                        <form action="{{ route('product.comment.store', $product->id) }}" method="POST">
-                            @csrf
-                            <h2>Want to participate</h2>
-
-
-                            <h3>Hi {{ auth()->user()->name }} What do you want to discuss</h3>
-                            <textarea placeholder="content" name="body"></textarea>
-                            <button type="submit" class="btn btn-default pull-right">
-                                Submit
-                            </button>
-                        </form>
-                    @endauth
+                    <x-product-brands :productBrandRelated="$productBrandRelated"></x-product-brands>
 
                 </div>
-
+                <x-product-reviews :product="$product"></x-product-reviews>
             </div>
         </div>
         <!--/category-tab-->

@@ -22,19 +22,23 @@ class CartController extends Controller
             $this->totalPrice = 0;
         }
     }
-    public function addItem($id, $product)
+    public function addItem($id, $product, $quantity = 1)
     {
         $price = (int)str_replace("$", "", $product->price);
         if (array_key_exists($id, $this->items)) {
             $productToAdd = $this->items[$id];
-            $productToAdd['quantity']++;
+            if ($quantity == 1) {
+                $productToAdd['quantity']++;
+            } else {
+                $productToAdd['quantity'] += $quantity;
+            }
             $productToAdd['totalSinglePrice'] = $productToAdd['quantity'] * $price;
         } else {
-            $productToAdd = ['quantity' => 1, 'totalSinglePrice' => $price, 'data' => $product];
+            $productToAdd = ['quantity' => $quantity, 'totalSinglePrice' => $price * $quantity, 'data' => $product];
+            $this->totalQuantity++;
         }
         $this->items[$id] = $productToAdd;
-        $this->totalQuantity++;
-        $this->totalPrice = $this->totalPrice + $price;
+        $this->totalPrice = $this->totalPrice + $productToAdd['totalSinglePrice'];
     }
     public function update()
     {

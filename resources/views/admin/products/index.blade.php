@@ -79,6 +79,7 @@
                                                             data-bs-dismiss="modal">Huy</button>
                                                         <form action="{{ route('admin.products.delete', $item->id) }}"
                                                             method="post">
+                                                            @csrf
                                                             <button type="submit" class="btn btn-danger">Xoa</button>
                                                         </form>
 

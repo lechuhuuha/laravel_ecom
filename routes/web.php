@@ -32,6 +32,7 @@ function renderRoute($url, $controller)
 Route::get('', 'ProductController@index')->name('root');
 
 Route::get('product/addToCart/{id}', 'ProductController@addProductToCart')->name('addToCart');
+Route::post('product/addToCart/{id}', 'ProductController@addProductToCart')->name('addToCart');
 
 Route::get('product/incr/{id}', 'ProductController@incrSingleProduct')->name('incrToCart');
 
@@ -41,7 +42,9 @@ Route::post('product/createOrder/', 'ProductController@createOrder')->name('crea
 
 Route::get('product/checkoutProduct/', 'ProductController@checkoutProduct')->name('checkoutProduct');
 
-Route::get('payment/paymentpage', 'Payment\PaymentController@showPaymentPage');
+Route::get('payment/paymentpage', 'Payment\PaymentController@showPaymentPage')->name('payment.index');
+
+Route::post('payment/pay', 'Payment\PaymentController@pay')->name('payment.store');
 
 Route::get('cart', 'ProductController@showCart')->name('cart');
 Route::get('product/{product}', 'ProductController@show')->name('product.show');
@@ -59,7 +62,7 @@ Route::post('product/{product}/comment', 'CommentController@store')->name('produ
 Route::get('product/category/{name?}', 'ProductFilterController@category')->name('product.category.show');
 Route::get('product/brand/{name?}', 'ProductFilterController@brand')->name('product.brand.show');
 
-Route::get('contact',function (){
+Route::get('contact', function () {
     return view('contacts');
 });
 Route::group([

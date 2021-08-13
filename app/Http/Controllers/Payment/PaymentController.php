@@ -20,4 +20,8 @@ class PaymentController extends Controller
         }
         Session::forget('cart');
     }
+    public function pay()
+    {
+        return redirect()->route('root')->with('success', 'thanks for choosing us');
+    }
 }

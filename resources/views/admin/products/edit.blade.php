@@ -63,16 +63,21 @@
             @enderror
             <div class="mb-3 mt-3">
                 <label for="exampleInputEmail1" class="form-label">Brands</label>
-
                 <select name="brand_id" class="form-select" aria-label="Default select example">
                     @foreach ($brands as $data)
-                        @foreach ($item->brands as $small)
-                            @if ($data->id == $small->id)
-                                <option selected="selected" value="{{ $data->id }}">{{ $data->name }}</option>
-                            @else
-                                <option value="{{ $data->id }}">{{ $data->name }}</option>
-                            @endif
-                        @endforeach
+                        @if (!$item->brands->isEmpty())
+                            @foreach ($item->brands as $small)
+                                @if ($data->id == $small->id)
+                                    <option selected="selected" value="{{ $data->id }}">{{ $data->name }}</option>
+                                @else
+                                    <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                @endif
+                            @endforeach
+                        @else
+                            <option value="{{ $data->id }}">{{ $data->name }}</option>
+
+                        @endif
+
                     @endforeach
                 </select>
             </div>

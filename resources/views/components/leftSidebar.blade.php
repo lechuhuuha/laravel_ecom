@@ -44,9 +44,9 @@
             <b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b> --}}
             <form action="" method="get">
                 <label for="">Min price</label>
-                <input type="number" name="price[]" id="">
+                <input type="number" value="{{ request()->price ? request()->price[0] : 0 }}" name="price[]">
                 <label for="">Max price</label>
-                <input type="number" name="price[]" id="">
+                <input type="number" value="{{ request()->price ? request()->price[1] : 0 }}" name="price[maxPrice]">
 
                 <button class="btn btn-default get">Submit</button>
             </form>

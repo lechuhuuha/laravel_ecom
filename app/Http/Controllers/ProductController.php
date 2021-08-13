@@ -23,7 +23,11 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         // dd($product);
-        return view('showProduct', ['product' => $product]);
+        $productBrandRelated = [];
+        foreach ($product->brands as $item) {
+            $productBrandRelated = Product::brand($item->name)->orderBy('created_at', 'desc')->take(4)->get();
+        }
+        return view('showProduct', ['product' => $product, 'productBrandRelated' => $productBrandRelated]);
     }
 
     public function addProductToCart(Request $request, $id)
@@ -31,7 +35,11 @@ class ProductController extends Controller
         $prevCart = $request->session()->get('cart');
         $cart = new CartController($prevCart);
         $product = Product::find($id);
-        $cart->addItem($id, $product);
+        if (request('quantity')) {
+            $cart->addItem($id, $product, request('quantity'));
+        } else {
+            $cart->addItem($id, $product);
+        }
         $request->session()->put('cart', $cart);
         return redirect()->route('root');
     }
@@ -91,7 +99,6 @@ class ProductController extends Controller
         if ($cart) {
             $date = date('Y-m-d H:i:m');
             $newOrderArray = array("status" => "on_hold", "date" => $date, "del_date" => $date, "price" => $cart->totalPrice, "created_at" => DB::raw('CURRENT_TIMESTAMP'), "updated_at" => DB::raw('CURRENT_TIMESTAMP'), "first_name" => $first_name ? $first_name : null, "address" => $address ? $address : null, "last_name" => $last_name ? $last_name : null, "zip" => $zip ? $zip : null, "email" => $email ? $email : null, "phone" => $phone ? $phone : null);
-
             $createdOrder = DB::table('orders')->insert($newOrderArray);
             $orders_id = DB::getPdo()->lastInsertId();
             foreach ($cart->items as $item) {

@@ -61,7 +61,6 @@ class ProductController extends Controller
 
         $cates = Category::all();
         $brand = Brand::all();
-
         return view('admin.products.edit', ['item' => $product, 'cates' => $cates, 'brands' => $brand]);
     }
     public function update(Product $product)
@@ -71,11 +70,11 @@ class ProductController extends Controller
                 'name' => 'required',
                 'price' => 'required',
                 'description' => 'required',
-                'images' => 'required',
                 'category_id' => 'required',
                 'brand_id' => 'required',
             ]
         );
+
         if (request()->hasFile('images')) {
             $images = request()->file('images');
             foreach ($images as $image) {
@@ -88,6 +87,7 @@ class ProductController extends Controller
                 $product->images()->attach($imgObj->id);
             }
         }
+
         $product->update($data);
 
         $product->categories()->sync($data['category_id']);
@@ -105,5 +105,10 @@ class ProductController extends Controller
             $products->where('name', 'like', '%' . request('name') . '%');
         }
         return view('admin.products.index', ['products' => $products->paginate(5)]);
+    }
+    public function delete(Product $product)
+    {
+        $product->delete();
+        return redirect()->route('admin.products.index');
     }
 }

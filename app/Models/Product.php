@@ -55,7 +55,7 @@ class Product extends Model
     {
         return $query->whereHas('categories', fn ($query) => $query->where('name', 'like', '%' . $name . '%'));
     }
-    public function scopeBrand($query,$name)
+    public function scopeBrand($query, $name)
     {
         return $query->whereHas('brands', fn ($query) => $query->where('name', 'like', '%' . $name . '%'));
     }
