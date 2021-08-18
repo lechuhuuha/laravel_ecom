@@ -104,6 +104,8 @@
                                 <li><a href="{{ route('cart') }}"><i class="fa fa-shopping-cart"></i> Cart
                                         ({{ session()->get('cart') ? session()->get('cart')->totalQuantity : 0 }})
                                     </a></li>
+                                <li><a href="{{ route('order') }}"><i class="fa fa-shopping-cart"></i> Order
+                                    </a></li>
                                 @guest
                                     <li><a href="/login"><i class="fa fa-lock"></i> Login</a></li>
                                     <li><a href="/register"><i class="fa fa-user-md"></i> Register</a></li>

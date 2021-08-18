@@ -15,7 +15,7 @@ return [
             'not_active' => 0
         ]
     ],
-    'invoice' => [
+    'order' => [
         'status' => [
             'cho_duyet' => 1,
             'dang_xu_ly' => 2,
@@ -25,4 +25,5 @@ return [
             'chuyen_hoan' => 6,
         ]
     ]
+    
 ];

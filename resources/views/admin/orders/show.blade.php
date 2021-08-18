@@ -30,8 +30,8 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Product name</th>
-                                <th scope="col">Order </th>
-                                <th scope="col">User name</th>
+                                <th scope="col">Username </th>
+                                <th scope="col">Price</th>
                                 <th scope="col">Product price</th>
                                 <th colspan="2">Action</th>
                             </tr>

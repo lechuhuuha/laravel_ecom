@@ -22,5 +22,5 @@
         }, 4000);
     }
 </script>
-
+@yield('footer-scripts')
 @include('layouts.footer')

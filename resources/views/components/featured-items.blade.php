@@ -14,7 +14,7 @@
 
 
                         <h2>{{ $item->price }}</h2>
-                        <p>{{ $item->name }}</p>
+                        <p style="padding: 10px">{{ $item->name }}</p>
                     </div>
                     <div class="product-overlay">
                         <div class="overlay-content">
@@ -26,12 +26,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="choose">
+                {{-- <div class="choose">
                     <ul class="nav nav-pills nav-justified">
                         <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
                         <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
                     </ul>
-                </div>
+                </div> --}}
             </div>
         </div>
     @endforeach

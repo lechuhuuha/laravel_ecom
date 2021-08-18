@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -88,7 +89,6 @@ class ProductController extends Controller
     public function createOrder(Request $request)
     {
         $cart = Session::get('cart');
-
         $first_name = $request->input('first_name');
         $address = $request->input('address');
         $last_name = $request->input('last_name');
@@ -98,7 +98,7 @@ class ProductController extends Controller
 
         if ($cart) {
             $date = date('Y-m-d H:i:m');
-            $newOrderArray = array("status" => "on_hold", "date" => $date, "del_date" => $date, "price" => $cart->totalPrice, "created_at" => DB::raw('CURRENT_TIMESTAMP'), "updated_at" => DB::raw('CURRENT_TIMESTAMP'), "first_name" => $first_name ? $first_name : null, "address" => $address ? $address : null, "last_name" => $last_name ? $last_name : null, "zip" => $zip ? $zip : null, "email" => $email ? $email : null, "phone" => $phone ? $phone : null);
+            $newOrderArray = array("status" => config('common.order.status.cho_duyet'), "date" => $date, "del_date" => $date, "price" => $cart->totalPrice, "created_at" => DB::raw('CURRENT_TIMESTAMP'), "updated_at" => DB::raw('CURRENT_TIMESTAMP'), "first_name" => $first_name ? $first_name : null, "address" => $address ? $address : null, "last_name" => $last_name ? $last_name : null, "zip" => $zip ? $zip : null, "email" => $email ? $email : null, "phone" => $phone ? $phone : null);
             $createdOrder = DB::table('orders')->insert($newOrderArray);
             $orders_id = DB::getPdo()->lastInsertId();
             foreach ($cart->items as $item) {
@@ -109,10 +109,7 @@ class ProductController extends Controller
                 $created_order_details = DB::table('order_details')->insert($newItemInCurrentOrder);
             }
             Session::forget("cart");
-            // if (auth()->id()) {
-            // } else {
-            //     Session::flush();
-            // }
+
             $request->session()->put('payment_info', $newOrderArray);
             return redirect()->route('payment.index');
         } else {
@@ -123,4 +120,5 @@ class ProductController extends Controller
     {
         return view('checkoutproducts');
     }
+
 }

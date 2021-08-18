@@ -42,15 +42,21 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    protected $with = ['permissions'];
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
     }
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
     public function order_details()
     {
         return $this->hasMany(OrderDetails::class, 'user_id');
+    }
+    public function permissions()
+    {
+        return $this->belongsToMany(Permissions::class, 'test_permisison_user', 'permission_id', 'user_id')->withPivot('permissions');
     }
 }

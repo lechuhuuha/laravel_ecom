@@ -11,7 +11,22 @@ class UserController extends Controller
     //
     public function index()
     {
-
+        // $user = User::all();
+        // $activeUser = auth()->user();
+        // foreach ($activeUser->permissions as $item2) {
+        //     if ($item2->pivot->permissions & config('permissions.action.index')) {
+        //         dd('nice');
+        //     } else {
+        //         abort(403);
+        //     };
+        // }
+        // foreach ($user as $item) {
+        //     foreach ($item->permissions as $item2) {
+        //         if ($item2->pivot->permissions) {
+        //         }
+        //     }
+        // }
+        // die();
         return view('admin.users.index', ['users' => User::paginate(5)]);
     }
     public function edit(User $user)

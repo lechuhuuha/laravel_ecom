@@ -2,3 +2,4 @@
 @include('admin_layouts.nav')
 @yield('contents')
 @include('admin_layouts.footer')
+@yield('footer-scripts')

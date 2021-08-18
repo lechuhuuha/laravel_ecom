@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Image;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -110,5 +111,26 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('admin.products.index');
+    }
+    public function changeStatus($id)
+    {
+        $order = Order::find($id);
+        $data = request('status');
+
+        if ($order->status != config('common.order.status.cho_duyet') && $data == config('common.order.status.cho_duyet')) {
+            return response()->json(['message' => $order->status, 'responseCode' => 400]);
+        } elseif ($data == config('common.order.status.da_giao')) {
+
+            $order->delete();
+            return response()->json(['message' => 'delivered', 'responseCode' => 200]);
+        } elseif ($data == config('common.order.status.da_huy')) {
+            $order->delete();
+            return response()->json(['message' => 'deleted', 'responseCode' => 200]);
+        } else {
+
+            $order->status = $data;
+            $order->save();
+            return response()->json(['message' => $order->status, 'responseCode' => 200]);
+        }
     }
 }

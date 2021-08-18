@@ -2,24 +2,9 @@
 @section('contents')
     <div class="container-fluid">
         <div class="row">
-
-
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div
-                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">Dashboard</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group me-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                            <span data-feather="calendar"></span>
-                            This week
-                        </button>
-                    </div>
-                </div>
-                <h2>Quan ly order</h2>
+
+                <h1>Quan ly order</h1>
                 <div class="table-responsive">
                     <div class="row mt-5">
                         <div class="col-6"></div>
@@ -34,7 +19,7 @@
                                 <th scope="col">Price</th>
                                 <th scope="col">Created_at</th>
                                 <th scope="col">Updated_at</th>
-                                <th scope="col">Action</th>
+                                <th colspan="2">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,11 +29,35 @@
                                     </td>
                                     {{-- <td>{{ $item->image }}</td> --}}
                                     <td>{{ $item->date }}</td>
-                                    <td>{{ $item->status }}</td>
+                                    <td>
+                                        <form action="" id="order-form-{{ $item->id }}" method="post">
+                                            @csrf
+                                            <select class="form-select" id="order-status-{{ $item->id }}" name="status">
+                                                @foreach (config('common.order.status') as $key => $value)
+
+                                                    @if ($value == $item->status)
+                                                        <option selected value="{{ $value }}">
+                                                            {{ $key }}
+                                                        </option>
+                                                    @else
+                                                        <option value="{{ $value }}">
+                                                            {{ $key }}
+                                                        </option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        </form>
+
+                                    </td>
                                     <td>{{ $item->del_date }}</td>
                                     <td>{{ $item->price }}</td>
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->updated_at }}</td>
+                                    <td>
+                                        <a class="btn btn-primary"
+                                            href="{{ route('admin.orders.edit', $item->id) }}">Update</a>
+
+                                    </td>
                                     <td>
                                         <button data-toggle="modal" data-target="#exampleModal_{{ $item->id }}"
                                             class="btn btn-danger">Delete</button>
@@ -92,4 +101,54 @@
             </main>
         </div>
     </div>
+
+    <script>
+        var orderArray = [
+            @foreach ($orders as $item)
+                "{{ $item->id }}",
+            @endforeach
+        ];
+        orderArray.forEach(element => {
+            var statusForm = document.getElementById("order-form-" + element);
+            var orderStatus = document.getElementById('order-status-' + element);
+            var _token = document.getElementsByName('_token');
+            var url = '/admin/products/order/changeStatus/' + element;
+            orderStatus.addEventListener('change', async function() {
+                console.log(orderStatus.value);
+                var token = _token[0].value;
+                await fetch(url, {
+                        method: "POST",
+                        body: JSON.stringify({
+                            id: element,
+                            status: orderStatus.value
+                        }),
+                        headers: {
+                            "X-CSRF-TOKEN": token,
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        }
+                    }).then(result => {
+                        return (result.json());
+                    }).then(function(json) {
+                        console.log(json);
+                        if (json['responseCode'] == 200 && json["message"].length < 2) {
+                            orderStatus.selectedIndex = parseInt(json["message"]) - 1;
+                        } else if (json["message"] == 'delivered') {
+                            location.reload();
+                            console.log('delivered');
+                        } else if (json["message"] == 'deleted') {
+                            console.log('deleted')
+                            location.reload();
+                        } else {
+                            orderStatus.selectedIndex = parseInt(json["message"]) - 1;
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            })
+
+        });
+    </script>
+
 @endsection

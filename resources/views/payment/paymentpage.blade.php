@@ -19,7 +19,11 @@
                     <tbody>
                         <tr>
                             <td class="cart_price">
-                                <p>{{ $data['status'] }}</p>
+                                @foreach (config('common.order.status') as $key => $value)
+                                    @if ($value == $data['status'])
+                                        <p>{{ $key }}</p>
+                                    @endif
+                                @endforeach
                             </td>
                             <td class="cart_quantity">
                                 <div class="cart_quantity_button">

@@ -48,13 +48,18 @@
 
                 <select name="category_id" class="form-select" aria-label="Default select example">
                     @foreach ($cates as $data)
-                        @foreach ($item->categories as $small)
-                            @if ($data->id == $small->id)
-                                <option selected="selected" value="{{ $data->id }}">{{ $data->name }}</option>
-                            @else
-                                <option value="{{ $data->id }}">{{ $data->name }}</option>
-                            @endif
-                        @endforeach
+                        @if (!$item->categories->isEmpty())
+                            @foreach ($item->categories as $small)
+                                @if ($data->id == $small->id)
+                                    <option selected="selected" value="{{ $data->id }}">{{ $data->name }}</option>
+                                @else
+                                    <option value="{{ $data->id }}">{{ $data->name }}</option>
+                                @endif
+                            @endforeach
+                        @else
+                            <option value="{{ $data->id }}">{{ $data->name }}</option>
+
+                        @endif
                     @endforeach
                 </select>
             </div>

@@ -47,6 +47,8 @@ Route::get('payment/paymentpage', 'Payment\PaymentController@showPaymentPage')->
 Route::post('payment/pay', 'Payment\PaymentController@pay')->name('payment.store');
 
 Route::get('cart', 'ProductController@showCart')->name('cart');
+Route::get('order', 'OrderController@index')->name('order');
+Route::get('order/{id}', 'OrderController@show')->name('order.show');
 Route::get('product/{product}', 'ProductController@show')->name('product.show');
 Route::get('cart/delete/{id}', 'ProductController@deleteCart')->name('cart.delete');
 
@@ -76,6 +78,7 @@ Route::group([
     ], function () {
         renderRoute('product', 'ProductController');
         Route::post('{name?}', 'ProductController@search')->name('search');
+        Route::post('order/changeStatus/{id}', 'ProductController@changeStatus')->name('changeStatus');
     });
     Route::group([
         'prefix' => 'users',
@@ -98,6 +101,8 @@ Route::group([
         renderRoute('order', 'OrderController');
     });
 });
+
+
 
 Route::fallback(function () {
     return abort(404);
