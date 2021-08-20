@@ -57,6 +57,6 @@ class User extends Authenticatable
     }
     public function permissions()
     {
-        return $this->belongsToMany(Permissions::class, 'test_permisison_user', 'permission_id', 'user_id')->withPivot('permissions');
+        return $this->belongsToMany(Permissions::class, 'permisison_user', 'user_id', 'permission_id')->withPivot('permissions');
     }
 }

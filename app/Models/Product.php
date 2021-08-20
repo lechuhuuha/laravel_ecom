@@ -16,6 +16,10 @@ class Product extends Model
     {
         return "$" . $value;
     }
+    // public function getDescriptionAttribute($value)
+    // {
+    //     return \Illuminate\Support\Str::words($value, 10);
+    // }
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_product', 'product_id', 'category_id');
@@ -45,11 +49,7 @@ class Product extends Model
         $query->when($filters['price']   ?? false, function ($query, $price) {
             $query->whereBetween('price', $price);
         });
-        // $query->when($filters['category'] ?? false, function ($query, $category) {
-        //     $query->whereHas('categories', function ($query, $category) {
-        //         $query->where('title', 'like', '%' . $category . '%');
-        //     });
-        // });
+
     }
     public function scopeCategory($query, $name)
     {

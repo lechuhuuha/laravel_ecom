@@ -100,8 +100,30 @@ Route::group([
     ], function () {
         renderRoute('order', 'OrderController');
     });
+    Route::group([
+        'prefix' => 'permissions',
+        'as' => 'permissions.'
+    ], function () {
+        renderRoute('permission', 'PermissionController');
+        Route::get('/admin/show/{user}/{permissions}', 'PermissionController@show')->name('showAction');
+        Route::get('/admin/create/user/permissions', 'PermissionController@addUser')->name('addUser');
+        Route::post('/admin/save/user/permissions', 'PermissionController@storeAddUser')->name('storeAddUser');
+        Route::post('/admin/delete/{user}/{permissions}', 'PermissionController@userDelete')->name('userdelete');
+        Route::post('/admin/save/action/{user}/{permissions}', 'PermissionController@saveAction')->name('saveAction');
+    });
+    Route::group([
+        'prefix' => 'categories',
+        'as' => 'categories.'
+    ], function () {
+        renderRoute('category', 'CategoryController');
+    });
+    Route::group([
+        'prefix' => 'brands',
+        'as' => 'brands.'
+    ], function () {
+        renderRoute('brand', 'BrandController');
+    });
 });
-
 
 
 Route::fallback(function () {

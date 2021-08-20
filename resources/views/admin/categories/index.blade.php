@@ -8,28 +8,19 @@
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Dashboard</h1>
-                    <form class="" action="{{ route('admin.products.search') }}" method="post">
+                    {{-- <form class="" action="{{ route('admin.categories.search') }}" method="post">
                         @csrf
                         <input class="form-control form-control" value="{{ request('name') }}" type="text" name="name"
                             placeholder="Search" aria-label="Search">
 
-                    </form>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group me-2">
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-                            <span data-feather="calendar"></span>
-                            This week
-                        </button>
-                    </div>
+                    </form> --}}
+
                 </div>
                 <h2>Quan ly san pham</h2>
                 <div class="table-responsive">
                     <div class="row mt-5">
                         <div class="col-6">
-                            <a href="{{ route('admin.products.create') }}" class="btn btn-success">create</a>
+                            <a href="{{ route('admin.categories.create') }}" class="btn btn-success">create</a>
                         </div>
                         <div class="col-6"></div>
                     </div>
@@ -38,25 +29,23 @@
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
-                                {{-- <th scope="col">Image</th> --}}
-                                <th scope="col">Price</th>
-                                <th scope="col">Description</th>
+                                <th scope="col">Created at</th>
+                                <th scope="col">Updated at</th>
                                 <th colspan="2">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($products as $item)
+                            @foreach ($categories as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td> <a href="{{ route('admin.products.show', $item->id) }}">
+                                    <td> <a href="{{ route('admin.categories.show', $item->id) }}">
                                             {{ $item->name }}</a></td>
                                     {{-- <td>{{ $item->image }}</td> --}}
-                                    <td>{{ $item->price }}</td>
-                                    <td>{{ \Illuminate\Support\Str::words($item->description, 10) }}
-                                    </td>
+                                    <td>{{ $item->created_at }}</td>
+                                    <td>{{ $item->updated_at }}</td>
                                     <td>
                                         <a class="btn btn-primary"
-                                            href="{{ route('admin.products.edit', $item->id) }}">Update</a>
+                                            href="{{ route('admin.categories.edit', $item->id) }}">Update</a>
 
                                     </td>
                                     <td>
@@ -78,7 +67,7 @@
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-default"
                                                             data-bs-dismiss="modal">Huy</button>
-                                                        <form action="{{ route('admin.products.delete', $item->id) }}"
+                                                        <form action="{{ route('admin.categories.delete', $item->id) }}"
                                                             method="post">
                                                             @csrf
                                                             <button type="submit" class="btn btn-danger">Xoa</button>
@@ -96,7 +85,7 @@
                         </tbody>
 
                     </table>
-                    {{ $products->links() }}
+                    {{-- {{ $categories->links() }} --}}
 
                 </div>
             </main>

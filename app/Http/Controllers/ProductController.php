@@ -23,7 +23,6 @@ class ProductController extends Controller
     }
     public function show(Product $product)
     {
-        // dd($product);
         $productBrandRelated = [];
         foreach ($product->brands as $item) {
             $productBrandRelated = Product::brand($item->name)->orderBy('created_at', 'desc')->take(4)->get();

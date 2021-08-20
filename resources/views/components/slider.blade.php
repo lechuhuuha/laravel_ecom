@@ -19,7 +19,7 @@
                                         <div class="col-sm-6">
                                             <h1><span>E</span>-SHOPPER</h1>
                                             <h2>{{ $item->name }}</h2>
-                                            <p>{{ $item->description }}</p>
+                                            <p>{{ \Illuminate\Support\Str::words($item->description, 10) }}</p>
                                             <button type="button" class="btn btn-default get"><a
                                                     href="{{ route('product.show', $item->id) }}">Get it
                                                     now</a></button>

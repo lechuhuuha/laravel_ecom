@@ -20,6 +20,18 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.categories.index') }}">
+                    <span data-feather="users"></span>
+                    Categories
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.brands.index') }}">
+                    <span data-feather="users"></span>
+                    Brands
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('admin.users.index') }}">
                     <span data-feather="users"></span>
                     Customers
